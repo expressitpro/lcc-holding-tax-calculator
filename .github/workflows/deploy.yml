@@ -28,8 +28,10 @@ jobs:
           cp ../saved_code/main.dart lib/main.dart
 
       - name: Build Web
-        run: flutter build web --release --base-href "/lcc-holding-tax-calculator/"
-
+        run: |
+          flutter build web --release --base-href "/lcc-holding-tax-calculator/"
+          sed -i 's/<head>/<head><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">/' build/web/index.html
+          
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
