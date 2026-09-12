@@ -440,8 +440,8 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                               children: [
                                 Text(
                                   _isBengali
-                                      ? 'মোট প্রদেয় (${_formatNumber(_selectedYearsCount)} ${_selectedYearsCount > 1 ? 'বছর (আনুমানিক)' : 'বছর (আনুমানিক)'})'
-                                      : 'Total Payable ($_selectedYearsCount ${_selectedYearsCount > 1 ? 'Years (Estimated)' : 'Year (Estimated)'})',
+                                      ? 'মোট প্রদেয় (${_formatNumber(_selectedYearsCount)} ${_selectedYearsCount > 1 ? 'বছর' : 'বছর'}) আনুমানিক'
+                                      : 'Total Payable ($_selectedYearsCount ${_selectedYearsCount > 1 ? 'Years' : 'Year'}) Estimated',
                                   style: TextStyle(color: Colors.white, fontSize: 14 * _fontScale),
                                 ),
                                 const SizedBox(height: 2),
