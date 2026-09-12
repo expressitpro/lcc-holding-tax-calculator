@@ -10,26 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Save original main.dart
+        run: |
+          mkdir ../saved_code
+          cp main.dart ../saved_code/main.dart
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: Inject Custom App Code
+      - name: Create Flutter Project & Replace Code
         run: |
-          cp main.dart /tmp/main.dart
-          flutter create . --overwrite --project-name lcc_holding_tax_calculator
-          cp /tmp/main.dart lib/main.dart
+          rm -rf *
+          flutter create . --project-name lcc_holding_tax_calculator
+          cp ../saved_code/main.dart lib/main.dart
 
       - name: Build Web
         run: flutter build web --release --base-href "/lcc-holding-tax-calculator/"
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
