@@ -1,6 +1,6 @@
 {
-    "name": "holding_tax_calculator",
-    "short_name": "holding_tax_calculator",
+    "name": "lcc_holding_tax_calculator",
+    "short_name": "lcc_holding_tax_calculator",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
