@@ -23,7 +23,7 @@ jobs:
           flutter create . --overwrite --project-name holding_tax_calculator
 
       - name: Build Web
-        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+        run: flutter build web --release --base-href "/lcc-holding-tax-calculator/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
