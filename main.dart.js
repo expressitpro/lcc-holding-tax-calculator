@@ -80788,7 +80788,7 @@ if(!this.e)return p
 for(s=0;s<10;++s){r=B.Gf[s]
 q=B.Hz[s]
 p=A.aqq(p,r,q)}return p},
-M(a){var s=null,r=this.e?"\u098f\u09b2\u09b8\u09bf\u09b8\u09bf \u09b9\u09cb\u09b2\u09cd\u09a1\u09bf\u0982 \u099f\u09cd\u09af\u09be\u0995\u09cd\u09b8 \u0995\u09cd\u09af\u09be\u09b2\u0995\u09c1\u09b2\u09c7\u099f\u09b0":"LCC Holding Tax Calculator"
+M(a){var s=null,r=this.e?"LCC Holding Tax Calcula (Estimated)":"LCC Holding Tax Calculator (Estimated)"
 r=A.cl(r,s,s,s,A.bX(s,s,s,s,s,s,s,s,s,s,s,18*this.f,s,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s)
 return new A.yZ(new A.v5(r,B.di,B.k,!0,new A.QK(s,s,1/0,56),s),A.aoX(!0,A.l_(new A.eU(B.Ao,A.atf(new A.agp(this)),s),s,s),B.aR,!0),s)},
 JX(a,b,c){var s,r=null,q=this.f,p=c?B.aC:B.o
@@ -80845,7 +80845,7 @@ m=A.a16(f,B.ks,f,f,f,f,f,f,!0,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,
 g=j.i("ee<1,ip<w>>")
 l=A.a0(new A.ee(new A.aZ(l,new A.agn(r),j.i("aZ<1>")),new A.ago(r),g),g.i("x.E"))
 q=A.anU(new A.cN(B.fH,A.qf(A.c([q,B.dB,A.rB(A.c([o,B.O6,A.ast(A.asj(m,l,new A.agg(r),i,n,h))],p),B.b0,B.aS,B.bK,0)],p),B.bq,B.aS,B.bK),f),f,2)
-o=r.e?"\u09ac\u09be\u09b0\u09cd\u09b7\u09bf\u0995 \u0995\u09b0 \u09b9\u09bf\u09b8\u09be\u09ac\u09c7\u09b0 \u09ac\u09bf\u09ac\u09b0\u09a3":"Yearly Calculation Breakdown"
+o=r.e?"\u09ac\u09be\u09b0\u09cd\u09b7\u09bf\u0995 \u0995\u09b0 \u09b9\u09bf\u09b8\u09be\u09ac\u09c7\u09b0 \u09ac\u09bf\u09ac\u09b0\u09a3 (\u0986\u09a8\u09c1\u09ae\u09be\u09a8\u09bf\u0995)":"Yearly Calculation Breakdown (Estimated)"
 o=A.cl(o,f,f,f,A.bX(f,f,f,f,f,f,f,f,f,f,f,16*r.f,f,f,B.aC,f,f,!0,f,f,f,f,f,f,f,f),f,f)
 n=r.e?"\u09ae\u09be\u09b8\u09bf\u0995 \u09ad\u09be\u09a1\u09bc\u09be (\u09ec \u099f\u09be\u0995\u09be/\u09ac\u09b0\u09cd\u0997\u09ab\u09c1\u099f):":"Monthly Rent (6 Tk/sq ft):"
 n=r.mM(n,"\u09f3 "+r.hT(r.as))
@@ -80865,12 +80865,11 @@ m=A.anU(new A.cN(B.fH,A.qf(m,B.bq,B.aS,B.bK),f),B.mj,2)
 o=A.FN(12)
 if(r.e){n=r.hT(r.grb())
 r.grb()
-n="\u09ae\u09cb\u099f \u09aa\u09cd\u09b0\u09a6\u09c7\u09af\u09bc ("+n+" \u09ac\u099b\u09b0)"}else{n=r.grb()
-l=r.grb()>1?"Years":"Year"
+n="\u09ae\u09cb\u099f \u09aa\u09cd\u09b0\u09a6\u09c7\u09af\u09bc ("+n+" \u09ac\u099b\u09b0 (\u0986\u09a8\u09c1\u09ae\u09be\u09a8\u09bf\u0995))"}else{n=r.grb()
+l=r.grb()>1?"Years (Estimated)":"Year (Estimated)"
 l="Total Payable ("+n+" "+l+")"
 n=l}o=A.vP(A.qf(A.c([A.cl(n,f,f,f,A.bX(f,f,B.k,f,f,f,f,f,f,f,f,14*r.f,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f),B.O8,A.cl("\u09f3 "+r.hT(r.db*r.grb()),f,f,f,A.bX(f,f,B.k,f,f,f,f,f,f,f,f,26*r.f,f,f,B.aC,f,f,!0,f,f,f,f,f,f,f,f),f,f)],p),B.b0,B.aS,B.bK),B.G,new A.dU(B.di,f,f,o,f,f,B.ba),f,f,B.Ef,f)
-n=r.e?"\u09aa\u09cd\u09b0\u09b8\u09cd\u09a4\u09c1\u09a4\u0995\u09b0\u09a3\u09c7 AR | \u09ad\u09be\u09b0\u09cd\u09b8\u09a8 \u09e8.\u09e6":"Developed by AR | v2.0"
-return new A.qE(B.Aq,B.lA,A.m1(new A.cN(B.fH,A.qf(A.c([s,k,B.dB,q,B.dB,m,B.dB,o,B.dB,A.cl(n,f,f,f,A.bX(f,f,B.Jy,f,f,f,f,f,f,f,f,11*r.f,f,f,B.a_,f,f,!0,f,f,f,f,f,f,f,f),B.eX,f)],p),B.e9,B.aS,B.dh),f),f,e),f)},
+return new A.qE(B.Aq,B.lA,A.m1(new A.cN(B.fH,A.qf(A.c([s,k,B.dB,q,B.dB,m,B.dB,o,B.dB,A.cl("Developed by AR | v5.0",f,f,f,A.bX(f,f,B.Jy,f,f,f,f,f,f,f,f,11*r.f,f,f,B.a_,f,f,!0,f,f,f,f,f,f,f,f),B.eX,f)],p),B.e9,B.aS,B.dh),f),f,e),f)},
 $S:490}
 A.agd.prototype={
 $1(a){var s=this.a
