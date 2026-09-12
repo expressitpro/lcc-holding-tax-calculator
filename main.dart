@@ -128,7 +128,7 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _isBengali ? 'এলসিসি হোল্ডিং ট্যাক্স ক্যালকুলেটর' : 'LCC Holding Tax Calculator',
+          _isBengali ? 'LCC Holding Tax Calcula (Estimated)' : 'LCC Holding Tax Calculator (Estimated)',
           style: TextStyle(fontSize: 18 * _fontScale),
         ),
         centerTitle: true,
@@ -382,7 +382,7 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    _isBengali ? 'বার্ষিক কর হিসাবের বিবরণ' : 'Yearly Calculation Breakdown',
+                                    _isBengali ? 'বার্ষিক কর হিসাবের বিবরণ (আনুমানিক)' : 'Yearly Calculation Breakdown (Estimated)',
                                     style: TextStyle(fontSize: 16 * _fontScale, fontWeight: FontWeight.bold),
                                   ),
                                   const Divider(),
@@ -440,8 +440,8 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                               children: [
                                 Text(
                                   _isBengali
-                                      ? 'মোট প্রদেয় (${_formatNumber(_selectedYearsCount)} ${_selectedYearsCount > 1 ? 'বছর' : 'বছর'})'
-                                      : 'Total Payable ($_selectedYearsCount ${_selectedYearsCount > 1 ? 'Years' : 'Year'})',
+                                      ? 'মোট প্রদেয় (${_formatNumber(_selectedYearsCount)} ${_selectedYearsCount > 1 ? 'বছর (আনুমানিক)' : 'বছর (আনুমানিক)'})'
+                                      : 'Total Payable ($_selectedYearsCount ${_selectedYearsCount > 1 ? 'Years (Estimated)' : 'Year (Estimated)'})',
                                   style: TextStyle(color: Colors.white, fontSize: 14 * _fontScale),
                                 ),
                                 const SizedBox(height: 2),
@@ -456,7 +456,7 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
 
                           // Footer
                           Text(
-                            _isBengali ? 'প্রস্তুতকরণে AR | ভার্সন ২.০' : 'Developed by AR | v2.0',
+                            _isBengali ? 'Developed by AR | v5.0' : 'Developed by AR | v5.0',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 11 * _fontScale,
