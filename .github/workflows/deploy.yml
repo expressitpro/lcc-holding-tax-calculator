@@ -16,11 +16,12 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create Flutter Project Structure
+      - name: Generate Flutter Structure & Inject Code
         run: |
-          mkdir -p lib
-          mv main.dart lib/main.dart
-          flutter create . --overwrite --project-name holding_tax_calculator
+          mkdir -p temp_code
+          cp main.dart temp_code/main.dart
+          flutter create . --overwrite --project-name lcc_holding_tax_calculator
+          cp temp_code/main.dart lib/main.dart
 
       - name: Build Web
         run: flutter build web --release --base-href "/lcc-holding-tax-calculator/"
@@ -28,5 +29,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
