@@ -80864,9 +80864,9 @@ m=A.anU(new A.cN(B.fH,A.qf(m,B.bq,B.aS,B.bK),f),B.mj,2)
 o=A.FN(12)
 if(r.e){n=r.hT(r.grb())
 r.grb()
-n="\u09ae\u09cb\u099f \u09aa\u09cd\u09b0\u09a6\u09c7\u09af\u09bc ("+n+" \u09ac\u099b\u09b0 (\u0986\u09a8\u09c1\u09ae\u09be\u09a8\u09bf\u0995))"}else{n=r.grb()
-l=r.grb()>1?"Years (Estimated)":"Year (Estimated)"
-l="Total Payable ("+n+" "+l+")"
+n="\u09ae\u09cb\u099f \u09aa\u09cd\u09b0\u09a6\u09c7\u09af\u09bc ("+n+" \u09ac\u099b\u09b0) \u0986\u09a8\u09c1\u09ae\u09be\u09a8\u09bf\u0995"}else{n=r.grb()
+l=r.grb()>1?"Years":"Year"
+l="Total Payable ("+n+" "+l+") Estimated"
 n=l}o=A.vP(A.qf(A.c([A.cl(n,f,f,f,A.bX(f,f,B.k,f,f,f,f,f,f,f,f,14*r.f,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f),B.O8,A.cl("\u09f3 "+r.hT(r.db*r.grb()),f,f,f,A.bX(f,f,B.k,f,f,f,f,f,f,f,f,26*r.f,f,f,B.aC,f,f,!0,f,f,f,f,f,f,f,f),f,f)],p),B.b0,B.aS,B.bK),B.G,new A.dU(B.di,f,f,o,f,f,B.ba),f,f,B.Ef,f)
 return new A.qE(B.Aq,B.lA,A.m1(new A.cN(B.fH,A.qf(A.c([s,k,B.dB,q,B.dB,m,B.dB,o,B.dB,A.cl("Developed by AR | v5.0",f,f,f,A.bX(f,f,B.Jy,f,f,f,f,f,f,f,f,11*r.f,f,f,B.a_,f,f,!0,f,f,f,f,f,f,f,f),B.eX,f)],p),B.e9,B.aS,B.dh),f),f,e),f)},
 $S:490}
