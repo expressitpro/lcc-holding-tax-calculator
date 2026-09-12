@@ -57,12 +57,17 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
     _calculateTax();
   }
 
+  @override
+  void dispose() {
+    _sizeController.dispose();
+    super.dispose();
+  }
+
   void _calculateTax() {
     double size = double.tryParse(_sizeController.text) ?? 0;
     
-    // Core Formula Rules based on document
     monthlyRent = size * 6.0;
-    annualRent = monthlyRent * 10; // 10 months rule
+    annualRent = monthlyRent * 10;
 
     if (_hasMutation) {
       mutationRebate = annualRent * 0.40;
@@ -72,7 +77,7 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
       taxableValue = annualRent;
     }
 
-    holdingTax = taxableValue * 0.12; // 12% Holding Tax Rate
+    holdingTax = taxableValue * 0.12;
 
     if (_hasAppeal) {
       appealRebate = (holdingTax * 0.15).roundToDouble();
@@ -113,173 +118,192 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Input Controls Card
-            Card(
-              elevation: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Property Details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 12),
-                    TextField(
-                      controller: _sizeController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Flat Size (Square Feet)',
-                        border: OutlineInputBorder(),
-                        suffixText: 'sq ft',
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.topCenter,
+                  child: SizedBox(
+                    width: constraints.maxWidth > 0 ? constraints.maxWidth : 400,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Input Controls Card
+                          Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Property Details', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 8),
+                                  TextField(
+                                    controller: _sizeController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Flat Size (Square Feet)',
+                                      border: OutlineInputBorder(),
+                                      suffixText: 'sq ft',
+                                      isDense: true,
+                                    ),
+                                    onChanged: (_) => _calculateTax(),
+                                  ),
+                                  SwitchListTile(
+                                    dense: true,
+                                    title: const Text('Mutation Completed (40% Rebate)'),
+                                    value: _hasMutation,
+                                    onChanged: (val) {
+                                      _hasMutation = val;
+                                      _calculateTax();
+                                    },
+                                  ),
+                                  SwitchListTile(
+                                    dense: true,
+                                    title: const Text('Appeal Submitted (15% Rebate)'),
+                                    value: _hasAppeal,
+                                    onChanged: (val) {
+                                      _hasAppeal = val;
+                                      _calculateTax();
+                                    },
+                                  ),
+                                  SwitchListTile(
+                                    dense: true,
+                                    title: const Text('Paid Within Due Date (10% Rebate)'),
+                                    value: _hasEarlyPayment,
+                                    onChanged: (val) {
+                                      _hasEarlyPayment = val;
+                                      _calculateTax();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          // Date Range Selection Card
+                          Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Calculation Period', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: DropdownButtonFormField<int>(
+                                          value: _startYear,
+                                          decoration: const InputDecoration(labelText: 'Start Year', border: OutlineInputBorder(), isDense: true),
+                                          items: _years.map((y) => DropdownMenuItem(value: y, child: Text('$y'))).toList(),
+                                          onChanged: (val) {
+                                            if (val != null) {
+                                              setState(() {
+                                                _startYear = val;
+                                                if (_endYear < _startYear) _endYear = _startYear;
+                                              });
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: DropdownButtonFormField<int>(
+                                          value: _endYear,
+                                          decoration: const InputDecoration(labelText: 'End Year', border: OutlineInputBorder(), isDense: true),
+                                          items: _years.where((y) => y >= _startYear).map((y) => DropdownMenuItem(value: y, child: Text('$y'))).toList(),
+                                          onChanged: (val) {
+                                            if (val != null) {
+                                              setState(() => _endYear = val);
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          // Breakdown Summary Card
+                          Card(
+                            color: Colors.teal.shade50,
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Yearly Calculation Breakdown', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  const Divider(),
+                                  _buildDataRow('Monthly Rent (6 Tk/sq ft):', '৳ ${monthlyRent.toStringAsFixed(0)}'),
+                                  _buildDataRow('Annual Valuation (10 Months):', '৳ ${annualRent.toStringAsFixed(0)}'),
+                                  if (_hasMutation) _buildDataRow('Mutation Rebate (40%):', '- ৳ ${mutationRebate.toStringAsFixed(0)}'),
+                                  _buildDataRow('Taxable Value:', '৳ ${taxableValue.toStringAsFixed(0)}'),
+                                  _buildDataRow('Holding Tax (12%):', '৳ ${holdingTax.toStringAsFixed(0)}'),
+                                  if (_hasAppeal) _buildDataRow('Appeal Rebate (15%):', '- ৳ ${appealRebate.toStringAsFixed(0)}'),
+                                  if (_hasEarlyPayment) _buildDataRow('Early Payment Rebate (10%):', '- ৳ ${earlyPaymentRebate.toStringAsFixed(0)}'),
+                                  const Divider(),
+                                  _buildDataRow('Net Tax Per Year:', '৳ ${finalYearlyTax.toStringAsFixed(0)}', isBold: true),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          // Total Payable Display Banner
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.teal,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Total Payable ($_selectedYearsCount ${_selectedYearsCount > 1 ? 'Years' : 'Year'})',
+                                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  '৳ ${_totalPayment.toStringAsFixed(0)}',
+                                  style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          // Copyright Footer
+                          const Text(
+                            'Developed by Razzak | v3.0',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                      onChanged: (_) => _calculateTax(),
                     ),
-                    const SizedBox(height: 12),
-                    SwitchListTile(
-                      title: const Text('Mutation Completed (40% Rebate)'),
-                      value: _hasMutation,
-                      onChanged: (val) {
-                        _hasMutation = val;
-                        _calculateTax();
-                      },
-                    ),
-                    SwitchListTile(
-                      title: const Text('Appeal Submitted (15% Rebate)'),
-                      value: _hasAppeal,
-                      onChanged: (val) {
-                        _hasAppeal = val;
-                        _calculateTax();
-                      },
-                    ),
-                    SwitchListTile(
-                      title: const Text('Paid Within Due Date (10% Rebate)'),
-                      value: _hasEarlyPayment,
-                      onChanged: (val) {
-                        _hasEarlyPayment = val;
-                        _calculateTax();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Date Range Selection Card
-            Card(
-              elevation: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Calculation Period', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DropdownButtonFormField<int>(
-                            value: _startYear,
-                            decoration: const InputDecoration(labelText: 'Start Year', border: OutlineInputBorder()),
-                            items: _years.map((y) => DropdownMenuItem(value: y, child: Text('$y'))).toList(),
-                            onChanged: (val) {
-                              if (val != null) {
-                                setState(() {
-                                  _startYear = val;
-                                  if (_endYear < _startYear) _endYear = _startYear;
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: DropdownButtonFormField<int>(
-                            value: _endYear,
-                            decoration: const InputDecoration(labelText: 'End Year', border: OutlineInputBorder()),
-                            items: _years.where((y) => y >= _startYear).map((y) => DropdownMenuItem(value: y, child: Text('$y'))).toList(),
-                            onChanged: (val) {
-                              if (val != null) {
-                                setState(() => _endYear = val);
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Breakdown Summary Card
-            Card(
-              color: Colors.teal.shade50,
-              elevation: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Yearly Calculation Breakdown', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const Divider(),
-                    _buildDataRow('Monthly Rent (6 Tk/sq ft):', '৳ ${monthlyRent.toStringAsFixed(0)}'),
-                    _buildDataRow('Annual Valuation (10 Months):', '৳ ${annualRent.toStringAsFixed(0)}'),
-                    if (_hasMutation) _buildDataRow('Mutation Rebate (40%):', '- ৳ ${mutationRebate.toStringAsFixed(0)}'),
-                    _buildDataRow('Taxable Value:', '৳ ${taxableValue.toStringAsFixed(0)}'),
-                    _buildDataRow('Holding Tax (12%):', '৳ ${holdingTax.toStringAsFixed(0)}'),
-                    if (_hasAppeal) _buildDataRow('Appeal Rebate (15%):', '- ৳ ${appealRebate.toStringAsFixed(0)}'),
-                    if (_hasEarlyPayment) _buildDataRow('Early Payment Rebate (10%):', '- ৳ ${earlyPaymentRebate.toStringAsFixed(0)}'),
-                    const Divider(),
-                    _buildDataRow('Net Tax Per Year:', '৳ ${finalYearlyTax.toStringAsFixed(0)}', isBold: true),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Total Payable Display Banner
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.teal,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    'Total Payable ($_selectedYearsCount ${_selectedYearsCount > 1 ? 'Years' : 'Year'})',
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '৳ ${_totalPayment.toStringAsFixed(0)}',
-                    style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
-            const SizedBox(height: 24),
-
-            // Copyright Footer
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                'Developed by AR | v2.0',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -287,12 +311,12 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
 
   Widget _buildDataRow(String label, String value, {bool isBold = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontSize: 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
-          Text(value, style: TextStyle(fontSize: 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(label, style: TextStyle(fontSize: 12, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(value, style: TextStyle(fontSize: 12, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
         ],
       ),
     );
