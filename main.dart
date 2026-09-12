@@ -128,7 +128,7 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _isBengali ? 'LCC Holding Tax Calcula (Estimated)' : 'LCC Holding Tax Calculator (Estimated)',
+          _isBengali ? 'LCC Holding Tax Calculator (Estimated)' : 'LCC Holding Tax Calculator (Estimated)',
           style: TextStyle(fontSize: 18 * _fontScale),
         ),
         centerTitle: true,
