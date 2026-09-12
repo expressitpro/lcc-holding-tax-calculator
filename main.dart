@@ -30,6 +30,8 @@ class HoldingTaxCalculatorScreen extends StatefulWidget {
 
 class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen> {
   final TextEditingController _sizeController = TextEditingController(text: '1310');
+
+  bool _isBengali = false; // Language toggle flag
   
   bool _hasMutation = true;
   bool _hasAppeal = true;
@@ -109,14 +111,41 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
     return finalYearlyTax * _selectedYearsCount;
   }
 
+  // Helper method to translate numbers to Bengali digits if Bengali is selected
+  String _formatNumber(num number) {
+    String numStr = number.toStringAsFixed(0);
+    if (!_isBengali) return numStr;
+    const en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const bn = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    for (int i = 0; i < en.length; i++) {
+      numStr = numStr.replaceAll(en[i], bn[i]);
+    }
+    return numStr;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('LCC Holding Tax Calculator'),
+        title: Text(_isBengali ? 'এলসিসি হোল্ডিং ট্যাক্স ক্যালকুলেটর' : 'LCC Holding Tax Calculator'),
         centerTitle: true,
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
+        actions: [
+          // Language Toggle Switch Button
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: TextButton.icon(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              onPressed: () => setState(() => _isBengali = !_isBengali),
+              icon: const Icon(Icons.language, size: 20),
+              label: Text(
+                _isBengali ? 'English' : 'বাংলা',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Center(
@@ -143,22 +172,25 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Property Details', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    _isBengali ? 'সম্পত্তির বিবরণ' : 'Property Details',
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
                                   const SizedBox(height: 8),
                                   TextField(
                                     controller: _sizeController,
                                     keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Flat Size (Square Feet)',
-                                      border: OutlineInputBorder(),
-                                      suffixText: 'sq ft',
+                                    decoration: InputDecoration(
+                                      labelText: _isBengali ? 'ফ্ল্যাটের আকার (বর্গফুট)' : 'Flat Size (Square Feet)',
+                                      border: const OutlineInputBorder(),
+                                      suffixText: _isBengali ? 'বর্গফুট' : 'sq ft',
                                       isDense: true,
                                     ),
                                     onChanged: (_) => _calculateTax(),
                                   ),
                                   SwitchListTile(
                                     dense: true,
-                                    title: const Text('Mutation Completed (40% Rebate)'),
+                                    title: Text(_isBengali ? 'নামজারি সম্পন্ন (৪০% রিবট)' : 'Mutation Completed (40% Rebate)'),
                                     value: _hasMutation,
                                     onChanged: (val) {
                                       _hasMutation = val;
@@ -167,7 +199,7 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                                   ),
                                   SwitchListTile(
                                     dense: true,
-                                    title: const Text('Appeal Submitted (15% Rebate)'),
+                                    title: Text(_isBengali ? 'আপিল জমাদানকৃত (১৫% রিবট)' : 'Appeal Submitted (15% Rebate)'),
                                     value: _hasAppeal,
                                     onChanged: (val) {
                                       _hasAppeal = val;
@@ -176,7 +208,7 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                                   ),
                                   SwitchListTile(
                                     dense: true,
-                                    title: const Text('Paid Within Due Date (10% Rebate)'),
+                                    title: Text(_isBengali ? 'নির্ধারিত সময়ের মধ্যে পরিশোধ (১০% রিবট)' : 'Paid Within Due Date (10% Rebate)'),
                                     value: _hasEarlyPayment,
                                     onChanged: (val) {
                                       _hasEarlyPayment = val;
@@ -197,15 +229,22 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Calculation Period', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    _isBengali ? 'গণনার সময়কাল' : 'Calculation Period',
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
                                   const SizedBox(height: 8),
                                   Row(
                                     children: [
                                       Expanded(
                                         child: DropdownButtonFormField<int>(
                                           value: _startYear,
-                                          decoration: const InputDecoration(labelText: 'Start Year', border: OutlineInputBorder(), isDense: true),
-                                          items: _years.map((y) => DropdownMenuItem(value: y, child: Text('$y'))).toList(),
+                                          decoration: InputDecoration(
+                                            labelText: _isBengali ? 'শুরুর বছর' : 'Start Year',
+                                            border: const OutlineInputBorder(),
+                                            isDense: true,
+                                          ),
+                                          items: _years.map((y) => DropdownMenuItem(value: y, child: Text(_formatNumber(y)))).toList(),
                                           onChanged: (val) {
                                             if (val != null) {
                                               setState(() {
@@ -220,8 +259,12 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                                       Expanded(
                                         child: DropdownButtonFormField<int>(
                                           value: _endYear,
-                                          decoration: const InputDecoration(labelText: 'End Year', border: OutlineInputBorder(), isDense: true),
-                                          items: _years.where((y) => y >= _startYear).map((y) => DropdownMenuItem(value: y, child: Text('$y'))).toList(),
+                                          decoration: InputDecoration(
+                                            labelText: _isBengali ? 'শেষের বছর' : 'End Year',
+                                            border: const OutlineInputBorder(),
+                                            isDense: true,
+                                          ),
+                                          items: _years.where((y) => y >= _startYear).map((y) => DropdownMenuItem(value: y, child: Text(_formatNumber(y)))).toList(),
                                           onChanged: (val) {
                                             if (val != null) {
                                               setState(() => _endYear = val);
@@ -246,17 +289,48 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Yearly Calculation Breakdown', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    _isBengali ? 'বার্ষিক কর হিসাবের বিবরণ' : 'Yearly Calculation Breakdown',
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
                                   const Divider(),
-                                  _buildDataRow('Monthly Rent (6 Tk/sq ft):', '৳ ${monthlyRent.toStringAsFixed(0)}'),
-                                  _buildDataRow('Annual Valuation (10 Months):', '৳ ${annualRent.toStringAsFixed(0)}'),
-                                  if (_hasMutation) _buildDataRow('Mutation Rebate (40%):', '- ৳ ${mutationRebate.toStringAsFixed(0)}'),
-                                  _buildDataRow('Taxable Value:', '৳ ${taxableValue.toStringAsFixed(0)}'),
-                                  _buildDataRow('Holding Tax (12%):', '৳ ${holdingTax.toStringAsFixed(0)}'),
-                                  if (_hasAppeal) _buildDataRow('Appeal Rebate (15%):', '- ৳ ${appealRebate.toStringAsFixed(0)}'),
-                                  if (_hasEarlyPayment) _buildDataRow('Early Payment Rebate (10%):', '- ৳ ${earlyPaymentRebate.toStringAsFixed(0)}'),
+                                  _buildDataRow(
+                                    _isBengali ? 'মাসিক ভাড়া (৬ টাকা/বর্গফুট):' : 'Monthly Rent (6 Tk/sq ft):',
+                                    '৳ ${_formatNumber(monthlyRent)}',
+                                  ),
+                                  _buildDataRow(
+                                    _isBengali ? 'বার্ষিক মূল্যায়ন (১০ মাস):' : 'Annual Valuation (10 Months):',
+                                    '৳ ${_formatNumber(annualRent)}',
+                                  ),
+                                  if (_hasMutation)
+                                    _buildDataRow(
+                                      _isBengali ? 'নামজারি রিবট (৪০%):' : 'Mutation Rebate (40%):',
+                                      '- ৳ ${_formatNumber(mutationRebate)}',
+                                    ),
+                                  _buildDataRow(
+                                    _isBengali ? 'করযোগ্য মূল্য:' : 'Taxable Value:',
+                                    '৳ ${_formatNumber(taxableValue)}',
+                                  ),
+                                  _buildDataRow(
+                                    _isBengali ? 'হোল্ডিং ট্যাক্স (১২%):' : 'Holding Tax (12%):',
+                                    '৳ ${_formatNumber(holdingTax)}',
+                                  ),
+                                  if (_hasAppeal)
+                                    _buildDataRow(
+                                      _isBengali ? 'আপিল রিবট (১৫%):' : 'Appeal Rebate (15%):',
+                                      '- ৳ ${_formatNumber(appealRebate)}',
+                                    ),
+                                  if (_hasEarlyPayment)
+                                    _buildDataRow(
+                                      _isBengali ? 'সময়মত প্রদানের রিবট (১০%):' : 'Early Payment Rebate (10%):',
+                                      '- ৳ ${_formatNumber(earlyPaymentRebate)}',
+                                    ),
                                   const Divider(),
-                                  _buildDataRow('Net Tax Per Year:', '৳ ${finalYearlyTax.toStringAsFixed(0)}', isBold: true),
+                                  _buildDataRow(
+                                    _isBengali ? 'প্রতি বছরের নিট কর:' : 'Net Tax Per Year:',
+                                    '৳ ${_formatNumber(finalYearlyTax)}',
+                                    isBold: true,
+                                  ),
                                 ],
                               ),
                             ),
@@ -273,12 +347,14 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                             child: Column(
                               children: [
                                 Text(
-                                  'Total Payable ($_selectedYearsCount ${_selectedYearsCount > 1 ? 'Years' : 'Year'})',
+                                  _isBengali
+                                      ? 'মোট প্রদেয় (${_formatNumber(_selectedYearsCount)} ${_selectedYearsCount > 1 ? 'বছর' : 'বছর'})'
+                                      : 'Total Payable ($_selectedYearsCount ${_selectedYearsCount > 1 ? 'Years' : 'Year'})',
                                   style: const TextStyle(color: Colors.white, fontSize: 14),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  '৳ ${_totalPayment.toStringAsFixed(0)}',
+                                  '৳ ${_formatNumber(_totalPayment)}',
                                   style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -287,10 +363,10 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                           const SizedBox(height: 8),
 
                           // Copyright Footer
-                          const Text(
-                            'Developed by Razzak | v3.0',
+                          Text(
+                            _isBengali ? 'প্রস্তুতকরণে AR | ভার্সন ২.০' : 'Developed by AR | v2.0',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11,
                               color: Colors.grey,
                               fontWeight: FontWeight.w500,
