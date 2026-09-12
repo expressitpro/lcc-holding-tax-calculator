@@ -111,7 +111,7 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
     return finalYearlyTax * _selectedYearsCount;
   }
 
-  // Helper method to translate numbers to Bengali digits if Bengali is selected
+  // Helper method to translate numbers to Bengali digits
   String _formatNumber(num number) {
     String numStr = number.toStringAsFixed(0);
     if (!_isBengali) return numStr;
@@ -131,21 +131,6 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
         centerTitle: true,
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
-        actions: [
-          // Language Toggle Switch Button
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: TextButton.icon(
-              style: TextButton.styleFrom(foregroundColor: Colors.white),
-              onPressed: () => setState(() => _isBengali = !_isBengali),
-              icon: const Icon(Icons.language, size: 20),
-              label: Text(
-                _isBengali ? 'English' : 'বাংলা',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              ),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: Center(
@@ -164,6 +149,53 @@ class _HoldingTaxCalculatorScreenState extends State<HoldingTaxCalculatorScreen>
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          // Prominent Language Toggle Bar (Always visible on Mobile)
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 8.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                            decoration: BoxDecoration(
+                              color: Colors.teal.shade100,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(Icons.language, color: Colors.teal, size: 20),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      _isBengali ? 'ভাষা নির্বাচন করুন:' : 'Select Language:',
+                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.teal),
+                                    ),
+                                  ],
+                                ),
+                                SegmentedButton<bool>(
+                                  segments: const [
+                                    ButtonSegment<bool>(
+                                      value: false,
+                                      label: Text('English', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                    ),
+                                    ButtonSegment<bool>(
+                                      value: true,
+                                      label: Text('বাংলা', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                    ),
+                                  ],
+                                  selected: {_isBengali},
+                                  onSelectionChanged: (Set<bool> newSelection) {
+                                    setState(() {
+                                      _isBengali = newSelection.first;
+                                    });
+                                  },
+                                  style: ButtonStyle(
+                                    visualDensity: VisualDensity.compact,
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
                           // Input Controls Card
                           Card(
                             elevation: 2,
