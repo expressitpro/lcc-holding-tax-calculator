@@ -16,12 +16,11 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Generate Flutter Structure & Inject Code
+      - name: Inject Custom App Code
         run: |
-          mkdir -p temp_code
-          cp main.dart temp_code/main.dart
+          cp main.dart /tmp/main.dart
           flutter create . --overwrite --project-name lcc_holding_tax_calculator
-          cp temp_code/main.dart lib/main.dart
+          cp /tmp/main.dart lib/main.dart
 
       - name: Build Web
         run: flutter build web --release --base-href "/lcc-holding-tax-calculator/"
@@ -30,6 +29,8 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web        with:
+          publish_dir: ./build/web
+        uses: peaceiris/actions-gh-pages@v3
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
