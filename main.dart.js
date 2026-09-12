@@ -80788,8 +80788,7 @@ if(!this.e)return p
 for(s=0;s<10;++s){r=B.Gf[s]
 q=B.Hz[s]
 p=A.aqq(p,r,q)}return p},
-M(a){var s=null,r=this.e?"LCC Holding Tax Calcula (Estimated)":"LCC Holding Tax Calculator (Estimated)"
-r=A.cl(r,s,s,s,A.bX(s,s,s,s,s,s,s,s,s,s,s,18*this.f,s,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s)
+M(a){var s=null,r=A.cl("LCC Holding Tax Calculator (Estimated)",s,s,s,A.bX(s,s,s,s,s,s,s,s,s,s,s,18*this.f,s,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s)
 return new A.yZ(new A.v5(r,B.di,B.k,!0,new A.QK(s,s,1/0,56),s),A.aoX(!0,A.l_(new A.eU(B.Ao,A.atf(new A.agp(this)),s),s,s),B.aR,!0),s)},
 JX(a,b,c){var s,r=null,q=this.f,p=c?B.aC:B.o
 p=A.cl(a,r,r,r,A.bX(r,r,r,r,r,r,r,r,r,r,r,12*q,r,r,p,r,r,!0,r,r,r,r,r,r,r,r),r,r)
